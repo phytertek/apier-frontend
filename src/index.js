@@ -2,18 +2,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-// Import redux and its dependencies
-import { createStore, applyMiddleware } from 'redux';
-import { Provider } from 'react-redux';
-import reduxPromise from 'redux-promise';
-import rootReducer from './rootReducer';
-
 // Import router for react
-import { BrowserRouter as Router } from 'react-router-dom';
+import createHistory from 'history/createBrowserHistory';
+import { ConnectedRouter } from 'react-router-redux';
 
 // Import Material_UI themeing
-import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
-import appTheme from './appTheme';
+import { MuiThemeProvider } from 'material-ui/styles';
+import theme from './theme';
+import 'typeface-roboto';
 
 // Import base App component
 import App from './App';
@@ -21,24 +17,23 @@ import App from './App';
 // Import service worker registration function
 import registerServiceWorker from './registerServiceWorker';
 
-// Create Redux store from rootReducer with promise handling middleware
-const createStoreWithMiddleware = applyMiddleware(reduxPromise)(createStore);
-const store = createStoreWithMiddleware(
-  rootReducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-);
-
-// Create Material_UI theme
-const theme = createMuiTheme(appTheme);
+// Import redux and its dependencies
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/es/integration/react';
+import createStore from './redux';
+const history = createHistory();
+const { store, persistor } = createStore(history);
 
 // Render app
 ReactDOM.render(
   <Provider store={store}>
-    <MuiThemeProvider theme={theme}>
-      <Router>
-        <App />
-      </Router>
-    </MuiThemeProvider>
+    <PersistGate persistor={persistor}>
+      <ConnectedRouter history={history}>
+        <MuiThemeProvider theme={theme}>
+          <App />
+        </MuiThemeProvider>
+      </ConnectedRouter>
+    </PersistGate>
   </Provider>,
   document.getElementById('root')
 );
