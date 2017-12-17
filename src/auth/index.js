@@ -26,7 +26,7 @@ const token = (state = initState, { type, payload }) => {
         authToken: payload.data.token
       });
     case API_POST_AUTH_LOGIN_SUCCESS:
-      return Object.assign({}, state, {
+        return Object.assign({}, state, {
         isAuth: true,
         authToken: payload.data.token
       });
@@ -37,4 +37,4 @@ const token = (state = initState, { type, payload }) => {
 
 const persistentAuth = persistReducer(localStorageConfig, token);
 
-export default combineReducers({ auth: persistentAuth, registration, login });
+export default combineReducers({ token: persistentAuth, registration, login });

@@ -7,9 +7,9 @@ import reduxAPI from './reduxAPI';
 
 // TODO: Import component reducers
 import auth from '../auth';
-
+import common from '../common';
 // Combine component reducers
-const combinedReducers = combineReducers({ auth, routerReducer });
+const combinedReducers = combineReducers({ common, auth, routerReducer });
 
 export default history => {
   const routerHistory = routerMiddleware(history);

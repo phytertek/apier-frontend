@@ -9,7 +9,7 @@ import Paper from 'material-ui/Paper';
 import Typography from 'material-ui/Typography';
 
 import { registrationFormInput, registrationFormErrors } from './index';
-import { apiPostAuthLogin } from '../../redux/reduxAPI';
+import { apiPostAuthRegister } from '../../redux/reduxAPI';
 
 import { validateForm, validateField } from './validateRegistration';
 
@@ -26,12 +26,13 @@ const RegistrationForm = props => {
     const validatedForm = validateForm(form);
     if (validatedForm.hasErrors)
       return registrationFormErrors(validatedForm.form);
-    const postForm = Object.keys(
-      validatedForm.form
-    ).reduce((submission, field) => {
-      submission[field] = form[field].value;
-      return submission;
-    }, {});
+    const postForm = Object.keys(validatedForm.form).reduce(
+      (submission, field) => {
+        submission[field] = form[field].value;
+        return submission;
+      },
+      {}
+    );
     apiPostAuthRegister(postForm);
   };
 
@@ -122,6 +123,6 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
   registrationFormInput,
-  apiPostAuthLogin,
+  apiPostAuthRegister,
   registrationFormErrors
 })(RegistrationForm);
