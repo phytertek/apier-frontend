@@ -20,18 +20,19 @@ const LoginForm = props => {
     e.preventDefault();
     const validatedForm = validateForm(form);
     if (validatedForm.hasErrors) return loginFormErrors(validatedForm.form);
-    const postForm = Object.keys(
-      validatedForm.form
-    ).reduce((submission, field) => {
-      submission[field] = form[field].value;
-      return submission;
-    }, {});
+    const postForm = Object.keys(validatedForm.form).reduce(
+      (submission, field) => {
+        submission[field] = form[field].value;
+        return submission;
+      },
+      {}
+    );
     apiPostAuthLogin(postForm);
   };
 
   const changeHandler = e => {
     const { name, value } = e.target;
-    loginFormInput(validateField(name, value, form.password));
+    loginFormInput(validateField(name, value));
   };
 
   return (
@@ -63,17 +64,6 @@ const LoginForm = props => {
             />
           </Grid>
           <Grid item xs={10} sm={8}>
-            <TextField
-              error={form.confirmPassword.error ? true : false}
-              helperText={form.confirmPassword.error || null}
-              type="password"
-              onChange={changeHandler}
-              name="confirmPassword"
-              label="Confirm Password"
-              fullWidth
-            />
-          </Grid>
-          <Grid item xs={10} sm={8}>
             <Button
               type="submit"
               raised={true}
@@ -81,7 +71,7 @@ const LoginForm = props => {
               onClick={submitHandler}
               style={{ width: '100%' }}
             >
-              Register
+              Login
             </Button>
           </Grid>
         </Grid>
